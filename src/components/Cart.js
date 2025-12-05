@@ -1,6 +1,6 @@
 
 import {useTitle} from '../hooks/useTitle.js';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 
 export const Cart = () => {
   const [items, setItems] = useState([]);
@@ -28,9 +28,16 @@ export const Cart = () => {
     }
   };
 
+  const total = useMemo(() => {
+    return items.reduce((sum, it) => sum + (Number(it.price) || 0), 0);
+  }, [items]);
+
   return (
     <section className="mx-6">
-      <div className="text-center text-4xl font-bold my-6">Cart items: {items.length}</div>
+      <div className="text-center text-4xl font-bold my-6">
+        <span>Cart items: {items.length}</span>
+        <span className="ml-4 text-2xl font-normal">Total: ${total.toFixed(2)}</span>
+      </div>
 
       {items.length === 0 ? (
         <div className="text-center text-gray-600">Your cart is empty.</div>
